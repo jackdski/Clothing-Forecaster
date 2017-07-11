@@ -1,4 +1,4 @@
-# Dictionaries for weather IDs and days of week
+# Dictionary for weather IDs
 weather = {
 	#thunderstorms
 		200: "a thunderstorm with light rain",
@@ -81,6 +81,7 @@ weather = {
 		962: "a hurricane"
 }
 
+# Dictionary for days of the week formatted to be said by computer
 week = {
 	0: "sun day",
 	1: "mun day",
@@ -91,16 +92,29 @@ week = {
 	6: "satr day"
 }
 
+# Dictionary for day of the week to be displayed by GUI
+weekActual = {
+	0: "Sunday",
+	1: "Monday",
+	2: "Tuesday",
+	3: "Wednsday",
+	4: "Thursday",
+	5: "Friday",
+	6: "Saturday"
+}
+
 # Important variables:
-currentDate = ""
-dayOfWeek = ""
-day =  ""
+currentDate = 0 # is turned into a string
+dayOfWeek = 0
+day = ""
 weatherID = 0
+weatherType = ""
+weatherIcon = ""
 precipString = ""
 whenItRains = [0,0,0,0,0]
 maxTemp = 0
 minTemp = 0
 avgTemp = 0
-clothesString = ""
-weatherString = ""
-tempString = ""
+#clothesString = ""
+#weatherString = ""
+#tempString = ""
