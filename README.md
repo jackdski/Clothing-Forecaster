@@ -5,5 +5,5 @@ Using:
   - Python 2 
   - Bash 
   - Festival for text-to-speech ability
-  - OpenWeatherMap for weather data
+  - OpenWeatherMap for weather data and weather icons
   - Tkinder for GUI ability
