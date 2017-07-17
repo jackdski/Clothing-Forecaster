@@ -1,5 +1,7 @@
 ### All the functions used ###
 
+import declarations
+
 #finishes clothesString for clothing recommendation
 def clothes(avgTemp):
 	if avgTemp <= 40:
@@ -41,54 +43,57 @@ def precipTimes(whenItRains):
 		return "at night "
 	else :
 		return "scattered"
+'''
+def setClothes(j,s,p,a,b,c):
+	j = a
+	s = b
+	p = c
+'''
 
 # Decide what suggestions should be
-def clothesEvents(temp):
-    if temp <= 40:
-		setClothes("J","L","P")
-		#jacket = "J" #1
-        #sleeves = "L" #1
-        #pants = "P" #1
-    elif temp in range(41,55):
-		setClothes("J","S","P")
-		#jacket = "J" #1
-        #sleeves = "S" #0
-        #pants = "P" #1
-    elif temp in range(55, 65):
-		setClothes("J","S","P/S")
-		#jacket = "J" #1
-        #sleeves = "S" #0
-        #pants = "P/S" #2
-    elif temp in range(65, 72):
-		setClothes("N/A","S","P/S")
-		#jacket = "N/A" #0
-        #sleeves = "S" #0
-        #pants = "P/S" #2
-    elif temp in range(72, 80):
-		setClothes("N/A","S","P/S")
-        #jacket = "N/A" #0
-        #sleeves = "S" #0
-        #pants = "P/S" #2
-    elif temp in range(80, 85 ):
-		setClothes("N/A","S","S")
-		#jacket = "N/A" #0
-        #sleeves = "S" #0
-        #pants = "S" #0
-    else:
-		setClothes("N/A","S","S")
-        #jacket = "N/A" #0
-        #sleeves = "S" #0
-        #pants = "S" #0
+# Not working for unknown reason
+def clothesEvents(jacket, sleeves, pants):
+	if declarations.avgTemp <= 40:
+		#setClothes(j,s,p,"J","L","P")
+		jacket = "J" #1
+		sleeves = "L" #1
+		pants = "P" #1   
+	elif declarations.avgTemp in range(41,55):
+		#setClothes(j,s,p,"J","S","P")
+		jacket = "J" #1
+		sleeves = "S" #0
+		pants = "P" #1
+	elif declarations.avgTemp in range(55, 65):
+		#setClothes(j,s,p,"J","S","P/S")
+		jacket = "J" #1
+		sleeves = "S" #0
+		pants = "P/S" #2
+	elif declarations.avgTemp in range(65, 72):
+		#setClothes(j,s,p,"N/A","S","P/S")
+		jacket = "N/A" #0
+		sleeves = "S" #0
+		pants = "P/S" #2
+	elif declarations.avgTemp in range(72, 80):
+		#setClothes(j,s,p,"N/A","S","P/S")
+		jacket = "N/A" #0
+		sleeves = "S" #0
+		pants = "P/S" #2
+	elif declarations.avgTemp in range(80, 85 ):
+		#setClothes(j,s,p,"N/A","S","S")
+		jacket = "N/A" #0
+		sleeves = "S" #0
+		pants = "S" #0
+	else:
+		#setClothes(j,s,p,"N/A","S","S")
+		jacket = "N/A" #0
+		sleeves = "S" #0
+		pants = "S" #0
 
-    if declarations.weatherType >= 500 & declarations.weatherType < 700:
-        footwear = 1
-    else:
-        footwear = 0
+	if declarations.weatherID >= 500 & declarations.weatherID < 700:
+		footwear = 1
+	else:
+		footwear = 0
 
-def setClothes(a,b,c):
-	jacket = a
-	sleeves = b
-	pants = c
 
 # Adds the correct extension to the url
 def iconSelect(num):
@@ -111,12 +116,25 @@ def iconSelect(num):
 		url += "01d.png"
 	return url
 
+'''
 def clearSpaces(line):
-		line.strip(" ")
-		for place in line:
-			if line[place].isspace() & line[place+1].isspace():
-				line = line[:place] + line[place+1:]
+	line.strip(" ")
+	for place in line:
+		if line[place].isspace() & line[place+1].isspace():
+			line = line[:place] + line[place+1:]
+	return None
+'''
 
+def clearSpaces(line):
+	line.strip(" ")
+	'''length = len(line)
+	i = 0
+	while i < length:
+		if line[i].isspace() & line[i+1].isspace():
+			line = line[:i] + line[i+1:]
+			clearSpaces(line)
+		i+=1
+		'''
 
 # Important variables:
 #	currentDate
