@@ -2,7 +2,7 @@
 
 import declarations
 
-#finishes clothesString for clothing recommendation
+#finishes clothing recommendation
 def clothes(avgTemp):
 	if avgTemp <= 40:
 		#clothesString = " wear pants   bootz  and  several  layers"
@@ -50,8 +50,8 @@ def setClothes(j,s,p,a,b,c):
 	p = c
 '''
 
-# Decide what suggestions should be
-# Not working for unknown reason
+# Decide what suggestions should be made
+# Not working 
 def clothesEvents(jacket, sleeves, pants):
 	if declarations.avgTemp <= 40:
 		#setClothes(j,s,p,"J","L","P")
