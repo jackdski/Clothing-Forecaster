@@ -7,12 +7,14 @@ from datetime import *
 import declarations
 import funcs
 
+# ID for Boulder: 5574999
 # ID for San Diego County: 5391832
 # ID for Poway: 5384690
 
 
 url = "http://api.openweathermap.org/data/2.5/forecast?id=5574999&units=imperial&APPID=95f93c13ee33a59d9818e3e9c321791b"
 
+# Get data from resource
 data = requests.get(url)
 
 jsondata = json.loads(data.text)
@@ -20,7 +22,7 @@ jsondata = json.loads(data.text)
 weatherIcon = jsondata["list"][3]["weather"][0]["icon"]
 print weatherIcon
 
-# Date and time stuff
+# Date and time 
 
 declarations.currentDate = datetime.now().strftime("%y-%m-%d")
 str(declarations.currentDate)
@@ -28,6 +30,7 @@ declarations.currentDate = "20" + declarations.currentDate #+ " 00:00:00"
 print "Date:"
 print declarations.currentDate
 
+# Get day of week
 declarations.dayOfWeek = int(datetime.today().strftime("%w")) + 1
 print "Day of the Week:"
 print declarations.dayOfWeek
@@ -38,11 +41,11 @@ for place in declarations.week:
 print "Day:"
 print declarations.day
 
-# Weather Stuff
+# Weather 
 
 # weather ID
 #print jsondata["list"][4]["weather"][0]["id"]
-# At 8pm the third index in list is noon
+# At 8pm the third index in list is noon the next day
 declarations.weatherID = jsondata["list"][3]["weather"][0]["id"]
 print "Weather ID:"
 print declarations.weatherID
@@ -53,7 +56,7 @@ for number in declarations.weather:
 
 #print jsondata["list"][3]
 
-#precip stuff
+#precip 
 #loop through the day and see if it will rain
 declarations.whenItRains = [0,0,0,0,0]
 for number in range(0,5):
@@ -68,7 +71,7 @@ print declarations.whenItRains
 declarations.precipString = funcs.precipTimes(declarations.whenItRains)
 #print precipString
 
-# Temperature Stuff
+# Temperature 
 declarations.maxTemp = int(jsondata["list"][0]["main"]["temp_max"])
 declarations.minTemp = int(jsondata["list"][0]["main"]["temp_max"])
 
@@ -84,6 +87,7 @@ for number in range(0,6):
 #maxTemp = str(jsondata["list"][4]["main"]["temp_max"]) #// 1
 #minTemp = str(jsondata["list"][4]["main"]["temp_min"]) #// 1
 
+# Find the average temperature
 declarations.avgTemp = (declarations.maxTemp + declarations.minTemp) / 2
 
 declarations.maxTemp = str(declarations.maxTemp)
@@ -102,9 +106,9 @@ clothesString = "It might be  good idea to "
 clothesString = clothesString + funcs.clothes(declarations.avgTemp)
 
 
-# Write to shellscript file stuff
-
-weatherString = "Tomorrow  on "+declarations.day+"  the weather will  be   "+declarations.weatherType+"  and " +declarations.precipString
+# Write to shellscript file
+weatherString = "Tomorrow  on "+declarations.day+"  the weather will  be   "
+	+ declarations.weatherType + "  and " + declarations.precipString
 tempString = "The high  is  " + declarations.maxTemp + "   and  the  low    is   " + declarations.minTemp
 
 shellscript = open("talk.sh", "r+")
