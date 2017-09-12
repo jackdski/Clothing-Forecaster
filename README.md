@@ -1,5 +1,5 @@
 # Weather-Program
-Python and Bash program that shows the weather forecast for the next day in a GUI window and is also spoken aloud by the computer. 
+Python and Bash program that shows the weather forecast for the next day in a simple GUI window and is also spoken aloud by the computer. 
 
 Using: 
   - Python 2 
