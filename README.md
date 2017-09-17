@@ -12,3 +12,5 @@ To Use:
   1. Edit path in cronFile.txt to go where you saved the project
   2. Run setup.sh to set a cronjob to run everyday at 8pm and get Festival Text-To-Speech
   3. Run main.sh to run program (Tkinder may need to be installed to see GUI)
+
+Unable to get cronjob to be added using script
