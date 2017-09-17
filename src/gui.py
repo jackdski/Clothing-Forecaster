@@ -27,13 +27,15 @@ gui = Tk()
 gui.title("Weather Program")
 gui.geometry("550x350")
 
-#path = "./images/"
-
 avgTemp = declarations.avgTemp
 print avgTemp
 
-path = funcs.iconSelect( declarations.weatherID )
-print path
+# Create path to get icons for gui
+path = os.getcwd() 
+extention = funcs.iconSelect( declarations.weatherID )
+path = path.replace("src", "Images/")
+path = path + extention
+#print path
 
 img = PhotoImage(file=path)#, height=50, width=50)
 image = Label(gui,image=img)
