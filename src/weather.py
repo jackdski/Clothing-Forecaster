@@ -107,8 +107,7 @@ clothesString = clothesString + funcs.clothes(declarations.avgTemp)
 
 
 # Write to shellscript file
-weatherString = "Tomorrow  on "+declarations.day+"  the weather will  be   "
-	+ declarations.weatherType + "  and " + declarations.precipString
+weatherString = "Tomorrow  on "+declarations.day+"  the weather will  be   " + declarations.weatherType + "  and " + declarations.precipString
 tempString = "The high  is  " + declarations.maxTemp + "   and  the  low    is   " + declarations.minTemp
 
 shellscript = open("talk.sh", "r+")
