@@ -2,9 +2,6 @@
 
 import sys
 import os
-#from urllib2 import urlopen
-#from io import BytesIO
-#from PIL import Image, ImageTk
 from Tkinter import *
 
 import weather
