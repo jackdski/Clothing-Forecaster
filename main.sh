@@ -2,6 +2,6 @@
 
 cd src
 python weather.py
-python /src/gui.py
+python gui.py
 cd ..
 ./talk.sh
