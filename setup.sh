@@ -12,8 +12,9 @@ echo "Y or N?"
 read answer
 
 if [ "$answer" == "Y" ] || [ "$answer" == "y" ]; then
-	crontab cronfile.txt
+	#crontab /home/jack/Desktop/Clothing-Forecaster-master/cronfile.txt
 	echo "Cron task added"
+		echo "0 20 * * * /home/jack/Desktop/Clothing-Forecaster-master/main.sh" >> crontab -e
 elif [ "$answer" == "N" ] || [ "$answer" == "n" ]; then 
 	echo "Cron task NOT added"
 else 
