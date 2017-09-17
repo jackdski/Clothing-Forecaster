@@ -97,7 +97,7 @@ def clothesEvents(jacket, sleeves, pants):
 
 # Adds the correct extension to the url
 def iconSelect(num):
-	url = "./images/"
+	url = ""
 	if num in range(200,233):
 		url += "11d.png"
 	elif num in range(300, 322):
