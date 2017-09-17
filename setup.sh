@@ -1,5 +1,3 @@
-#!/bin/bash/
-
 # setup.sh 
 # Author: Jack Danielski
 
