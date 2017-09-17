@@ -1,4 +1,4 @@
-# Weather-Program
+# Clothing Forecaster
 Python and Bash program that shows the weather forecast for the next day in a simple GUI window and is also spoken aloud by the computer. 
 
 Using: 
