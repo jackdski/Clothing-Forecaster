@@ -3,120 +3,127 @@
 import json
 import requests
 from datetime import *
+from .info import *
+from .funcs import *
 
-import declarations
-import funcs
 
 # ID for Boulder: 5574999
 # ID for San Diego County: 5391832
 # ID for Poway: 5384690
+def weather(info):
+	url = "http://api.openweathermap.org/data/2.5/forecast?id=5574999&units=imperial&APPID=95f93c13ee33a59d9818e3e9c321791b"
 
+	# Get data from resource
+	data = requests.get(url)
 
-url = "http://api.openweathermap.org/data/2.5/forecast?id=5574999&units=imperial&APPID=95f93c13ee33a59d9818e3e9c321791b"
+	jsondata = json.loads(data.text)
 
-# Get data from resource
-data = requests.get(url)
+	# weather_icon = jsondata["list"][3]["weather"][0]["icon"]
+	# print(weather_icon)
 
-jsondata = json.loads(data.text)
+	# Date and time
+	info.date = datetime.now().strftime("%Y-%m-%d")
+	day = str(int(info.date[-2:]) + 1)
+	info.date = info.date[:-2] + day
+	print("Date: {}".format(info.date))
 
-weatherIcon = jsondata["list"][3]["weather"][0]["icon"]
-print weatherIcon
+	# Get day of week
+	weekday_id = int(datetime.today().strftime("%w")) + 1
+	info.day_of_week = get_weekday(weekday_id)
+	print("Day of the Week: {}".format(info.day_of_week))
+	info.day = get_weekday_actual(weekday_id)
+	print("Day: {}".format(info.day))
 
-# Date and time 
+	# collect weather data for each time point
+	dt_list = [
+		Timepoint(info.date + " 03:00:00"),  # 0
+		Timepoint(info.date + " 06:00:00"),  # 1
+		Timepoint(info.date + " 09:00:00"),  # 2
+		Timepoint(info.date + " 12:00:00"),  # 3
+		Timepoint(info.date + " 15:00:00"),  # 4
+		Timepoint(info.date + " 18:00:00"),  # 5
+		Timepoint(info.date + " 21:00:00")   # 6
+	]
 
-declarations.currentDate = datetime.now().strftime("%y-%m-%d")
-str(declarations.currentDate)
-declarations.currentDate = "20" + declarations.currentDate #+ " 00:00:00"
-print "Date:"
-print declarations.currentDate
+	# fill with data from json file
+	for i in range(0, 7):
+		dt_list[i].min_temp = jsondata["list"][i]["main"]['temp_min']
+		dt_list[i].max_temp = jsondata["list"][i]["main"]['temp_max']
+		dt_list[i].avg_temp = jsondata["list"][i]["main"]['temp']
+		dt_list[i].altitude = jsondata["list"][i]["main"]['sea_level']
+		dt_list[i].precipitation = jsondata["list"][i]["weather"][0]['main']
+		dt_list[i].id = jsondata["list"][i]["weather"][0]['id']
+		dt_list[i].description = jsondata["list"][i]["weather"][0]['description']
 
-# Get day of week
-declarations.dayOfWeek = int(datetime.today().strftime("%w")) + 1
-print "Day of the Week:"
-print declarations.dayOfWeek
+	precip_list = []
+	for timepoint in dt_list:
+		is_precip = True if timepoint.precipitation != "Clear" and timepoint.precipitation != 'Clouds' else False
+		precip_list.append(tuple((timepoint.precipitation, is_precip)))
 
-for place in declarations.week:
-	if declarations.dayOfWeek == place:
-		declarations.day = declarations.week[place]
-print "Day:"
-print declarations.day
+	info.precipitation = get_precip_string(precip_list)
+	print("info.precipitation: ".format(info.precipitation))
 
-# Weather 
+	# Temperature
+	min_temps = []
+	max_temps = []
+	avg_temps = []
 
-# weather ID
-#print jsondata["list"][4]["weather"][0]["id"]
-# At 8pm the third index in list is noon the next day
-declarations.weatherID = jsondata["list"][3]["weather"][0]["id"]
-print "Weather ID:"
-print declarations.weatherID
+	# create high, low, and avg lists excluding 3am time slot
+	for timepoint in range(1, 6):
+		min_temps.append(int(dt_list[timepoint].min_temp))
+		max_temps.append(int(dt_list[timepoint].max_temp))
+		avg_temps.append(int(dt_list[timepoint].avg_temp))
 
-for number in declarations.weather:
-	if declarations.weatherID == number:
-		declarations.weatherType = declarations.weather[number]
+	# find min, max, and avg temps
+	info.min_temp = str(min(min_temps))
+	info.max_temp = str(max(max_temps))
+	info.avg_temp = str(sum(avg_temps) // len(avg_temps))
 
-#print jsondata["list"][3]
+	print("Max Temp: {}".format(info.max_temp))
+	print("Min Temp: {}".format(info.min_temp))
+	print("Avg. Temp: {}".format(info.avg_temp))
 
-#precip 
-#loop through the day and see if it will rain
-declarations.whenItRains = [0,0,0,0,0]
-for number in range(0,5):
-	for value in range(200, 623):
-		if value == jsondata["list"][number]["weather"][0]["id"]:
-			declarations.whenItRains[number] = 1
+	# make clothes recommendations
+	clothing_decision = "It might be  good idea to "
+	clothing_decision = clothing_decision + clothes(int(info.avg_temp))
 
-print "When It Will Rain:"
-print declarations.whenItRains
+	# describe temperature
+	if int(info.max_temp) > 70:
+		info.weather_type = "warm weather"
+	elif int(info.max_temp) in range(45, 70):
+		info.weather_type = "a mild temperature"
+	elif int(info.max_temp) < 45:
+		info.weather_type = "cold weather"
 
+	# describe precipitation
+	if info.weatherID in range(300, 399):
+		info.weather_type += "with   a  drizzle"
+	elif info.weatherID in range(200, 299):
+		info.weather_type += "with   a  thunderstorm"
+	elif info.weatherID in range(500, 599):
+		info.weather_type += "with   rain"
+	elif info.weatherID in range(600, 699):
+		info.weather_type += "with   snow"
+	elif info.weatherID in range(801, 805):
+		info.weather_type += "and cloudy"
+	elif info.weatherID == 800:
+		info.weather_type += "and clear skies"
 
-declarations.precipString = funcs.precipTimes(declarations.whenItRains)
-#print precipString
+	# Write to shellscript file
+	weather_description = "Tomorrow  on "+ info.day + "there will be" + info.weather_type
 
-# Temperature 
-declarations.maxTemp = int(jsondata["list"][0]["main"]["temp_max"])
-declarations.minTemp = int(jsondata["list"][0]["main"]["temp_max"])
+	if info.precipitation != "clear":
+		weather_description += "  and " + info.precipitation
 
-# go through first 6 indecies to get high and low temps
-for number in range(0,6):
-	if int(jsondata["list"][number]["main"]["temp_max"]) > declarations.maxTemp:
-		declarations.maxTemp = int(jsondata["list"][number]["main"]["temp_max"])
+	temp_info = "The high  is  " + info.max_temp + "   and  the  low    is   " + info.min_temp
 
-for number in range(0,6):
-	if int(jsondata["list"][number]["main"]["temp_min"]) < declarations.minTemp:
-		declarations.minTemp = int(jsondata["list"][number]["main"]["temp_min"])
+	shellscript = open("talk.sh", "r+")
+	# print("Name of shellscript: ", shellscript.name
 
-#maxTemp = str(jsondata["list"][4]["main"]["temp_max"]) #// 1
-#minTemp = str(jsondata["list"][4]["main"]["temp_min"]) #// 1
+	shellscript.truncate()  # clear file
 
-# Find the average temperature
-declarations.avgTemp = (declarations.maxTemp + declarations.minTemp) / 2
-
-declarations.maxTemp = str(declarations.maxTemp)
-declarations.minTemp = str(declarations.minTemp)
-
-declarations.maxTemp = declarations.maxTemp[:2]
-declarations.minTemp = declarations.minTemp[:2]
-
-print "Max Temp: "
-print declarations.maxTemp
-print "Min Temp: "
-print declarations.minTemp
-
-# make clothes recommendations
-clothesString = "It might be  good idea to "
-clothesString = clothesString + funcs.clothes(declarations.avgTemp)
-
-
-# Write to shellscript file
-weatherString = "Tomorrow  on "+declarations.day+"  the weather will  be   " + declarations.weatherType + "  and " + declarations.precipString
-tempString = "The high  is  " + declarations.maxTemp + "   and  the  low    is   " + declarations.minTemp
-
-shellscript = open("talk.sh", "r+")
-#print "Name of shellscript: ", shellscript.name
-
-shellscript.truncate()	#clear file
-
-shellscript.write("#!/bin/bash\n")
-shellscript.write("echo \" " + weatherString + "\" | festival --tts\n")
-shellscript.write("echo \" " + tempString + "\" | festival --tts\n")
-shellscript.write("echo \" " + clothesString + "\" | festival --tts\n")
-shellscript.close()
+	shellscript.write("#!/bin/bash\n")
+	shellscript.write("echo \" " + weather_description + "\" | festival --tts\n")
+	shellscript.write("echo \" " + temp_info + "\" | festival --tts\n")
+	shellscript.write("echo \" " + clothing_decision + "\" | festival --tts\n")
+	shellscript.close()

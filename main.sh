@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd src
-python weather.py
-cd ..
-./talk.sh
-cd src
-python gui.py
+#cd src
+python main.py
+#cd ..
+#./talk.sh
+#cd src
+#python gui.python

@@ -1,7 +1,12 @@
-# setup.sh 
+#!/usr/bin/env bash
+# setup.sh
 # Author: Jack Danielski
 
 # Program that implements a daily task so that the Clothing Forecaster runs at 8pm
+
+# add line to get tkinter
+echo "Installing Tkinter..."
+sudo apt-get install python3-tk
 
 # Important: switch path in cronfile.txt to where you saved main.sh
 

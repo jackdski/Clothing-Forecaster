@@ -2,133 +2,121 @@
 
 import sys
 import os
-from Tkinter import *
+from tkinter import *
 
-import weather
-import declarations
-import funcs
-
-weekday = ""
-for num in range(0,7):
-    if num == declarations.dayOfWeek:
-        weekday = declarations.weekActual[num]
-print weekday
-
-# What the weather forcast is
-weatherString = declarations.weatherType
-weatherString[0].capitalize()
-#funcs.clearSpaces(weatherString)
+from .info import *
+from .funcs import *
 
 
-gui = Tk()
-gui.title("Weather Program")
-gui.geometry("550x350")
+def gui(info):
+	# What the weather forecast is
+	weather_string = info.weather_type
+	weather_string.capitalize()
+	# funcs.clearSpaces(weather_string)
 
-avgTemp = declarations.avgTemp
-print avgTemp
+	my_gui = Tk()
+	my_gui.title("Weather Program")
+	my_gui.geometry("550x350")
 
-# Create path to get icons for gui
-path = os.getcwd() 
-extention = funcs.iconSelect( declarations.weatherID )
-path = path.replace("src", "Images/")
-path = path + extention
-#print path
+	avg_temp = info.avg_temp
 
-img = PhotoImage(file=path)#, height=50, width=50)
-image = Label(gui,image=img)
-image.pack()
+	# Create path to get icons for gui
+	path = os.getcwd()
+	extention = icon_select(info.weatherID)
+	path += '/Images/' + extention
+	print("path: {}".format(path))
 
-weatherText = Text(gui, font='Arial')#, wrap=WORD)
+	img = PhotoImage(file=path)  # , height=50, width=50)
+	image = Label(my_gui, image=img)
+	image.pack()
 
-weatherText.insert(INSERT, "\t\t\t"+weekday+" "+declarations.currentDate)
-weatherText.insert(INSERT, "\n\t\t    the weather will be "+weatherString)
-weatherText.pack()
+	weather_text = Text(my_gui, font='Arial')  # , wrap=WORD)
 
-weatherText.insert(INSERT, "\n\n\t\tHigh:\t\t\tLow:")
-weatherText.insert(INSERT, "\n\t\t"+declarations.maxTemp+
-	"\t\t\t"+declarations.minTemp)
+	weather_text.insert(INSERT, "\t\t\t" + info.day + " " + str(info.date))
 
+	weather_text.insert(INSERT, "\n\t\t    the weather will be " + weather_string)
+	weather_text.pack()
 
-jacket = ""      # 0 = N/A;      1 = Jacket
-sleeves = ""     # 0 = short;    1 = long
-pants = ""       # 0 = shorts;   1 = pants;  2 = either
-footwear = ""    # 0 = shoes ;   1 = boots
+	weather_text.insert(INSERT, "\n\n\t\tHigh:\t\t\tLow:")
+	weather_text.insert(INSERT, "\n\t\t" + info.max_temp + "\t\t\t" + info.min_temp)
 
-#funcs.clothesEvents(jacket, sleeves, pants)
+	jacket = ""      # 0 = N/A;      1 = Jacket
+	sleeves = ""     # 0 = short;    1 = long
+	pants = ""       # 0 = shorts;   1 = pants;  2 = either
+	footwear = ""    # 0 = shoes ;   1 = boots
 
-if declarations.avgTemp <= 40:
-	#setClothes(j,s,p,"J","L","P")
-	jacket = "Jacket" #1
-	sleeves = "Long" #1
-	pants = "Pants" #1   
-elif declarations.avgTemp in range(41,55):
-	#setClothes(j,s,p,"J","S","P")
-	jacket = "Jacket" #1
-	sleeves = "Short" #0
-	pants = "Pants" #1
-elif declarations.avgTemp in range(55, 65):
-	#setClothes(j,s,p,"J","S","P/S")
-	jacket = "Jacket" #1
-	sleeves = "Short" #0
-	pants = "Pants/Shorts" #2
-elif declarations.avgTemp in range(65, 72):
-	#setClothes(j,s,p,"N/A","S","P/S")
-	jacket = "N/A" #0
-	sleeves = "Short" #0
-	pants = "Pants/Shorts" #2
-elif declarations.avgTemp in range(72, 80):
-	#setClothes(j,s,p,"N/A","S","P/S")
-	jacket = "N/A" #0
-	sleeves = "Shorts" #0
-	pants = "Pants/Shortss" #2
-elif declarations.avgTemp in range(80, 85 ):
-	#setClothes(j,s,p,"N/A","S","S")
-	jacket = "N/A" #0
-	sleeves = "Short" #0
-	pants = "Shorts" #0
-else:
-	#setClothes(j,s,p,"N/A","S","S")
-	jacket = "N/A" #0
-	sleeves = "Short" #0
-	pants = "Shorts" #0
+	# funcs.clothesEvents(jacket, sleeves, pants)
 
-if declarations.weatherID >= 500 & declarations.weatherID < 700:
-	footwear = "Sandals"
-else:
-	footwear = "Boots"
+	if int(info.avg_temp) <= 40:
+		jacket = "Jacket"
+		sleeves = "Long"
+		pants = "Pants"
+	elif int(info.avg_temp) in range(41,55):
+		# setClothes(j,s,p,"J","S","P")
+		jacket = "Jacket"
+		sleeves = "Short"
+		pants = "Pants"
+	elif int(info.avg_temp) in range(55, 65):
+		# setClothes(j,s,p,"J","S","P/S")
+		jacket = "Jacket"
+		sleeves = "Short"
+		pants = "Pants/Shorts"
+	elif int(info.avg_temp) in range(65, 72):
+		# setClothes(j,s,p,"N/A","S","P/S")
+		jacket = "N/A"
+		sleeves = "Short"
+		pants = "Pants/Shorts"
+	elif int(info.avg_temp) in range(72, 80):
+		# setClothes(j,s,p,"N/A","S","P/S")
+		jacket = "N/A"
+		sleeves = "Shorts"
+		pants = "Pants/Shorts"
+	elif int(info.avg_temp) in range(80, 85):
+		# setClothes(j,s,p,"N/A","S","S")
+		jacket = "N/A"
+		sleeves = "Short"
+		pants = "Shorts"
+	else:
+		# setClothes(j,s,p,"N/A","S","S")
+		jacket = "N/A"
+		sleeves = "Short"
+		pants = "Shorts"
 
-print "Jacket: "
-print jacket
+	# if raining or snowing wear boots
+	if info.weatherID >= 500 & info.weatherID < 700:
+		footwear = "Boots"
+	# otherwise wear what you want
+	else:
+		footwear = "Tennis Shoes or Sandals"
 
-weatherText.insert(INSERT, "\n\nJacket:\t\tSleeves:\t\tPants:\t\tFootwear:")
+	weather_text.insert(INSERT, "\n\nJacket:\t\tSleeves:\t\tPants:\t\tFootwear:")
 
-weatherText.insert(INSERT, "\n\n"+jacket)
-weatherText.insert(INSERT, "\t\t"+sleeves)
-weatherText.insert(INSERT, "\t\t"+pants)
-weatherText.insert(INSERT, "\t\t"+footwear)
+	weather_text.insert(INSERT, "\n\n" + jacket)
+	weather_text.insert(INSERT, "\t\t" + sleeves)
+	weather_text.insert(INSERT, "\t\t" + pants)
+	weather_text.insert(INSERT, "\t\t" + footwear)
 
-weatherText.pack()
+	weather_text.pack()
 
-'''
-jacketText = Text(gui, font='Arial', width=5 bd=5)
-jacketText.insert(INSERT, jacket)
-jacketText.pack()
+	'''
+	jacketText = Text(gui, font='Arial', width=5 bd=5)
+	jacketText.insert(INSERT, jacket)
+	jacketText.pack()
+	
+	sleevesText = Text(gui, font='Arial', bd=5)
+	sleevesText.insert(INSERT, sleeves)
+	sleevesText.pack()
+	
+	pantsText = Text(gui, font='Arial', bd=50)
+	pantsText.insert(INSERT, pants)
+	pantsText.pack()
+	
+	footwearText = Text(gui, font='Arial', bd=50)
+	footwearText.insert(INSERT, footwear)
+	footwearText.pack()
+	'''
 
-sleevesText = Text(gui, font='Arial', bd=5)
-sleevesText.insert(INSERT, sleeves)
-sleevesText.pack()
+	# quitButton = Button(gui, text="QUIT", command=quit)
+	# quitButton.pack()
 
-pantsText = Text(gui, font='Arial', bd=50)
-pantsText.insert(INSERT, pants)
-pantsText.pack()
-
-footwearText = Text(gui, font='Arial', bd=50)
-footwearText.insert(INSERT, footwear)
-footwearText.pack()
-'''
-
-#quitButton = Button(gui, text="QUIT", command=quit)
-#quitButton.pack()
-
-
-gui.mainloop()
+	my_gui.mainloop()
